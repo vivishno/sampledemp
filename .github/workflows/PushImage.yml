@@ -16,14 +16,14 @@ jobs:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
 
 
-        - name: create subscription
-          uses: azure/CLI@v1 
-          with:
-             azcliversion: 2.9.1
-             inlineScript: |
-                az deployment group create --resource-group ignitedemo1 --template-file .cloud/.azure/deploy.json \
-                --parameters .cloud/.azure/deploy.params.json patToken=${{secrets.PATTOKEN}} \
-                containerRegistryName=acrevivek12 repo_name=$GITHUB_REPOSITORY
+        #- name: create subscription
+         # uses: azure/CLI@v1 
+          #with:
+           #  azcliversion: 2.9.1
+            # inlineScript: |
+             #   az deployment group create --resource-group ignitedemo1 --template-file .cloud/.azure/deploy.json \
+              #  --parameters .cloud/.azure/deploy.params.json patToken=${{secrets.PATTOKEN}} \
+               # containerRegistryName=acrevivek12 repo_name=$GITHUB_REPOSITORY
         
         - name: 'Build and push image'
           uses: azure/docker-login@v1
