@@ -21,17 +21,17 @@ jobs:
           with:
              azcliversion: 2.9.1
              inlineScript: |
-                az deployment group create --resource-group demovivek7 --template-file .cloud/.azure/deploy.json \
+                az deployment group create --resource-group ignitedemo1 --template-file .cloud/.azure/deploy.json \
                 --parameters .cloud/.azure/deploy.params.json patToken=${{secrets.PATTOKEN}} \
-                containerRegistryName=acrevivek123 repo_name=$GITHUB_REPOSITORY
+                containerRegistryName=acrevivek12 repo_name=$GITHUB_REPOSITORY
         
         - name: 'Build and push image'
           uses: azure/docker-login@v1
           with:
-            login-server: acrevivek123.azurecr.io 
+            login-server: acrevivek12.azurecr.io 
             username: ${{ secrets.USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }} 
         - run: |
             docker pull houssemdocker/angular-app:latest
-            docker tag houssemdocker/angular-app:latest acrevivek123.azurecr.io/my-app6:v1
-            docker push acrevivek123.azurecr.io/my-app6:v1 
+            docker tag houssemdocker/angular-app:latest acrevivek12.azurecr.io/my-app6:v1
+            docker push acrevivek12.azurecr.io/my-app6:v1 
