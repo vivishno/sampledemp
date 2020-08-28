@@ -11,7 +11,7 @@ jobs:
     
     - name: Check variables
       run: |
-          echo "::set-env name=repo_name::acrevivek12.azurecr.io/${{ github.event.client_payload.data.target.repository }}"
+          echo "::set-env name=repo_name::${{ github.event.client_payload.request.host }}/${{ github.event.client_payload.data.target.repository }}"
           echo "::set-env name=repo_version::${{ github.event.client_payload.data.target.tag }}"
           echo "::set-env name=image_name::acrevivek12.azurecr.io/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}"
           
