@@ -1,0 +1,54 @@
+name: CI
+on:
+  repository_dispatch:
+    types: [containerregistry-imagepushed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Check variables
+      run: |
+          echo "::set-env name=filter::v1"
+          echo "::set-env name=repo_name::acrevivek123.azurecr.io/${{ github.event.client_payload.data.target.repository }}"
+          echo "::set-env name=repo_version::${{ github.event.client_payload.data.target.tag }}"
+          echo "::set-env name=image_name::acrevivek123.azurecr.io/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}"
+          
+    - name: Check tag filter
+      run: |
+        if [ "$repo_version" != "$filter" ]; then echo "incorrect tag filter supplied"; exit 1 ; fi;
+          
+    - name: Set Context for Azure Kubernetes Cluster using azure/aks-set-context@v1 action
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}' 
+        cluster-name: clust
+        resource-group: demovivek7
+    
+    - uses: Azure/k8s-create-secret@v1
+      with:
+        container-registry-url: acrevivek123.azurecr.io
+        container-registry-username: ${{ secrets.USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: demo-k8s-secret
+
+    - uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm2'
+        helmChart: './charts/'
+        overrideFiles: './charts/values.yaml'
+        overrides: |     
+          image.repository: ${{ env.repo_name }}
+          image.tag: ${{ env.repo_version }}
+        releaseName: test01
+      id: bake
+
+    - uses: Azure/k8s-deploy@v1
+      with:
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+        images: |
+          ${{ env.image_name }}
+        imagepullsecrets: |
+          demo-k8s-secret
