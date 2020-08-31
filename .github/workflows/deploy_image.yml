@@ -47,7 +47,7 @@ jobs:
         overrides: |     
           image.repository: ${{ env.repo_name }}
           image.tag: ${{ env.repo_version }}
-        releaseName: test01
+        releaseName: test012
       id: bake
 
     - uses: Azure/k8s-deploy@v1
