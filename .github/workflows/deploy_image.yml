@@ -16,7 +16,7 @@ jobs:
         repo_version: ${{ github.event.client_payload.data.target.tag }}
         image_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}
       run: |
-        echo $host_name
+        echo ${{ env.image_name }}
         echo $repo_name
         echo $repo_version
         echo $image_name
