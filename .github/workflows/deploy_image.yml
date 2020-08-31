@@ -29,7 +29,7 @@ jobs:
       uses: azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}' 
-        cluster-name: clust
+        cluster-name: clust1
         resource-group: ignitedemo1
     
     - uses: Azure/k8s-create-secret@v1
