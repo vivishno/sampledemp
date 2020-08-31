@@ -12,10 +12,11 @@ jobs:
     - name: set variables
       env:
         host_name: ${{ github.event.client_payload.data.request.host }}
-        repo_name: $host_name/${{ github.event.client_payload.data.target.repository }}
+        #repo_name: $host_name/${{ github.event.client_payload.data.target.repository }}
         repo_version: ${{ github.event.client_payload.data.target.tag }}
         image_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}
       run: |
+        echo "::set-env name=repo_name::$host_name/${{ github.event.client_payload.data.target.repository }}"
         echo ${{ env.image_name }}
         echo ${{ env.repo_name }}
         echo ${{ env.repo_version }}
