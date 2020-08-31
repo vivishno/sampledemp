@@ -44,7 +44,7 @@ jobs:
         helmChart: './charts/'
         overrideFiles: './charts/values.yaml'
         overrides: |     
-          image.repository: acrevivek12.azurecr.io/my-app6
+          image.repository: ${{ env.host_name }}/${{ env.repo_name }}
           image.tag: ${{ env.repo_version }}
         releaseName: test012
       id: bake
