@@ -1,5 +1,4 @@
 on: [push]
-name: Linux_Container_Workflow
  
 env:
  RESOURCE_GROUP: ignitedemo1
