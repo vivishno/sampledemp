@@ -45,7 +45,7 @@ jobs:
         overrideFiles: './charts/values.yaml'
         overrides: |     
           image.repository: acrevivek12.azurecr.io/my-app6
-          image.tag: v1
+          image.tag: $repo_version
         releaseName: test012
       id: bake
 
