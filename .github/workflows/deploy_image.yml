@@ -20,7 +20,6 @@ jobs:
         echo $repo_name
         echo $repo_version
         echo $image_name
-        acrevivek12.azurecr.io/my-app6:v1
     #- name: Check tag filter
      # run: |
       #  if [ "$repo_version" != "$filter" ]; then echo "incorrect tag filter supplied"; exit 1 ; fi;
