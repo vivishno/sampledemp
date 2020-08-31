@@ -16,7 +16,7 @@ jobs:
         repo_version: ${{ github.event.client_payload.data.target.tag }}
         #image_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}
       run: |
-        echo "::set-env name=repo_name::$host_name/${{ github.event.client_payload.data.target.repository }}"
+        echo "::set-env name=repo_name::${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}"
         echo "::set-env name=image_name::$repo_name:$repo_version"
         echo ${{ env.repo_name }}
         echo ${{ env.repo_version }}
