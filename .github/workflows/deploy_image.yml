@@ -20,7 +20,7 @@ jobs:
         echo $repo_name
         echo $repo_version
         echo $image_name
-          
+        acrevivek12.azurecr.io/my-app6:v1
     #- name: Check tag filter
      # run: |
       #  if [ "$repo_version" != "$filter" ]; then echo "incorrect tag filter supplied"; exit 1 ; fi;
@@ -34,7 +34,7 @@ jobs:
     
     - uses: Azure/k8s-create-secret@v1
       with:
-        container-registry-url: $host_name
+        container-registry-url: acrevivek12.azurecr.io
         container-registry-username: ${{ secrets.USERNAME }}
         container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         secret-name: demo-k8s-secret
@@ -45,8 +45,8 @@ jobs:
         helmChart: './charts/'
         overrideFiles: './charts/values.yaml'
         overrides: |     
-          image.repository: ${{ env.repo_name }}
-          image.tag: ${{ env.repo_version }}
+          image.repository: acrevivek12.azurecr.io/my-app6
+          image.tag: v1
         releaseName: test012
       id: bake
 
@@ -54,6 +54,6 @@ jobs:
       with:
         manifests: ${{ steps.bake.outputs.manifestsBundle }}
         images: |
-          ${{ env.image_name }}
+          acrevivek12.azurecr.io/my-app6:v1
         imagepullsecrets: |
           demo-k8s-secret
