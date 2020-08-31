@@ -1,7 +1,7 @@
 name: CI
 on:
   repository_dispatch:
-    types: [containerregistry-imagepushed]
+    types: [containerregistry-imagepushed] 
 
 env:
    HOST_NAME: ${{ github.event.client_payload.data.request.host }}
