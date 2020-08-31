@@ -8,32 +8,17 @@ env:
    repo_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}
    repo_version: ${{ github.event.client_payload.data.target.tag }}
    image_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}
-
+    
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    
-    - name: set variables
-      #env:
-        #host_name: ${{ github.event.client_payload.data.request.host }}
-        #repo_name: "${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}"
-        #repo_version: ${{ github.event.client_payload.data.target.tag }}
-        #image_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}
-        #echo "::set-env name=repo_name::${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}"
-
-      run: |
-        echo $host_name
-        echo $repo_name
-        echo $repo_version
-        echo $image_name
         
     - name: user input
       run: |
-         echo "Provide aks cluster::set-env name=repo_name::clust1"
-        
-
+         echo "<<provide aks cluster>>::set-env name=clust_name::clust1"
+         echo "<<provide resource group>>::set-env=rsrc_grp::ignitedemo1"
     #- name: Check tag filter
      # run: |
       #  if [ "$repo_version" != "$filter" ]; then echo "incorrect tag filter supplied"; exit 1 ; fi;
@@ -42,12 +27,12 @@ jobs:
       uses: azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}' 
-        cluster-name: clust1
-        resource-group: ignitedemo1
+        cluster-name: ${{ env.clust_name }}
+        resource-group: ${{ env.rsrc_grp }}
     
     - uses: Azure/k8s-create-secret@v1
       with:
-        container-registry-url: $host_name
+        container-registry-url: ${{ env.host_name }}
         container-registry-username: ${{ secrets.USERNAME }}
         container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         secret-name: demo-k8s-secret
