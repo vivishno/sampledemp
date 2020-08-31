@@ -57,6 +57,6 @@ jobs:
       with:
         manifests: ${{ steps.bake.outputs.manifestsBundle }}
         images: |
-          acrevivek12.azurecr.io/my-app6:v1
+          ${{ env.image_name }}
         imagepullsecrets: |
           demo-k8s-secret
