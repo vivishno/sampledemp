@@ -12,14 +12,14 @@ jobs:
     - name: set variables
       env:
         host_name: ${{ github.event.client_payload.data.request.host }}
-        repo_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}
+        repo_name: $host_name/${{ github.event.client_payload.data.target.repository }}
         repo_version: ${{ github.event.client_payload.data.target.tag }}
         image_name: ${{ github.event.client_payload.data.request.host }}/${{ github.event.client_payload.data.target.repository }}:${{ github.event.client_payload.data.target.tag }}
       run: |
         echo ${{ env.image_name }}
         echo ${{ env.repo_name }}
-        echo $repo_version
-        echo $image_name
+        echo ${{ env.repo_version }}
+        echo ${{ env.image_name }}
     #- name: Check tag filter
      # run: |
       #  if [ "$repo_version" != "$filter" ]; then echo "incorrect tag filter supplied"; exit 1 ; fi;
@@ -45,7 +45,7 @@ jobs:
         overrideFiles: './charts/values.yaml'
         overrides: |     
           image.repository: ${{ env.repo_name }}
-          image.tag: $repo_version
+          image.tag: ${{ env.repo_version }}
         releaseName: test012
       id: bake
 
