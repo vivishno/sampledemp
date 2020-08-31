@@ -21,6 +21,12 @@ jobs:
         echo ${{ env.repo_name }}
         echo ${{ env.repo_version }}
         echo ${{ env.image_name }}
+        
+    - name: user input
+      run: |
+         echo "Provide aks cluster::set-env name=repo_name::clust1"
+        
+
     #- name: Check tag filter
      # run: |
       #  if [ "$repo_version" != "$filter" ]; then echo "incorrect tag filter supplied"; exit 1 ; fi;
