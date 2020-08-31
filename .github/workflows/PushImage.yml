@@ -1,6 +1,10 @@
 on: [push]
 name: Linux_Container_Workflow
  
+env:
+ RESOURCE_GROUP: ignitedemo1
+ CONTAINER_REGISTRY_NAME: acrevivek12
+ 
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest 
@@ -16,22 +20,22 @@ jobs:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
 
 
-        #- name: create subscription
-         # uses: azure/CLI@v1 
-          #with:
-           #  azcliversion: 2.9.1
-            # inlineScript: |
-             #   az deployment group create --resource-group ignitedemo1 --template-file .cloud/.azure/deploy.json \
-              #  --parameters .cloud/.azure/deploy.params.json patToken=${{secrets.PATTOKEN}} \
-               # containerRegistryName=acrevivek12 repo_name=$GITHUB_REPOSITORY
+        - name: create subscription
+          uses: azure/CLI@v1 
+          with:
+             azcliversion: 2.9.1
+             inlineScript: |
+                az deployment group create --resource-group ${{ env.RESOURCE_GROUP }} --template-file .cloud/.azure/deploy.json \
+                --parameters .cloud/.azure/deploy.params.json patToken=${{secrets.PATTOKEN}} \
+                containerRegistryName=${{ env.CONTAINER_REGISTRY_NAME }} repo_name=$GITHUB_REPOSITORY
         
         - name: 'Build and push image'
           uses: azure/docker-login@v1
           with:
-            login-server: acrevivek12.azurecr.io 
+            login-server: ${{ env.CONTAINER_REGISTRY_NAME }}.azurecr.io 
             username: ${{ secrets.USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }} 
         - run: |
             docker pull houssemdocker/angular-app:latest
-            docker tag houssemdocker/angular-app:latest acrevivek12.azurecr.io/my-app6:v1
-            docker push acrevivek12.azurecr.io/my-app6:v1 
+            docker tag houssemdocker/angular-app:latest ${{ env.CONTAINER_REGISTRY_NAME }}.azurecr.io/sample_image:v1
+            docker push ${{ env.CONTAINER_REGISTRY_NAME }}.azurecr.io/sample_image:v1 
