@@ -1,8 +1,8 @@
 on: [push]
  
 env:
- RESOURCE_GROUP: ignitedemo1
- CONTAINER_REGISTRY_NAME: acrevivek12
+ RESOURCE_GROUP: one
+ CONTAINER_REGISTRY_NAME: onereg
  
 jobs:
     build-and-deploy:
